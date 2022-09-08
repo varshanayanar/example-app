@@ -21,7 +21,6 @@ class NoteController extends Controller
         //
       
        $notes = Note::whereBelongsTo(Auth::user())->latest('updated_at')->paginate(5);
-     
        return view('notes.index')->with('notes',$notes);
         $notes ->each(function($note){
         dump($note->title);
@@ -50,21 +49,12 @@ class NoteController extends Controller
         
        
       $path_file= $request->file('file_name')->store('pdf_files','public');
-      print_r($path_file);
         $files_data=$request->files;
         $request->validate([
             'title' => 'required|max:120'
             
         ]);
 
-
-      //  foreach ($files_data as $key => $value) {
-           // print_r('inside');
-      //     echo "<pre>";
-       //     $details =(array)$value;
-       //    print_r($details);
-       //     echo "<pre>";
-      //  }
      
         Note::create([
             'user_id' => Auth::id(),
@@ -125,13 +115,13 @@ class NoteController extends Controller
      
         $request->validate([
             'title' => 'required|max:120',
-            'text' => 'required'
+          
         ]);
 
         DB::table('notes')->update([
            
-            'title' => $request->title,
-            'text' => $request->text
+            'title' => $request->title
+            
         ]);
         return to_route('notes.show', $note)->with('success','Note updated successfully');
         
